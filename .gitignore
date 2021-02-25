@@ -1,0 +1,5 @@
+id_rsa*
+.terraform/*
+*state*
+env_vars
+*lock*
