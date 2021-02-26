@@ -17,7 +17,7 @@ resource "oci_database_db_system" "dbaas" {
       db_workload    = "OLTP"
 
       db_backup_config {
-        auto_backup_enabled = "true"
+        auto_backup_enabled = "false"
       }
     }
 
@@ -63,11 +63,12 @@ resource "oci_database_data_guard_association" "d_guard_a" {
   transport_type = "ASYNC"
 
   #Optional
-  availability_domain = data.oci_identity_availability_domains.ADs_B.availability_domains[var.AD - 1]["name"]
-  display_name        = "dr_testdb"
-  hostname            = "dr_testdb"
+  #availability_domain = data.oci_identity_availability_domains.ADs_B.availability_domains[var.AD - 1]["name"]
+  availability_domain = data.oci_identity_availability_domains.ADs_B.availability_domains[var.AD]["name"]
+  display_name        = "dr-testdb"
+  hostname            = "dr-testdb"
   nsg_ids             = []
-  shape               = "VM.Standard2.2"
+  shape               = "VM.Standard2.1"
   subnet_id           = oci_core_subnet.subnet_02_a.id
 
 }

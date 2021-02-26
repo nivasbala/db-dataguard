@@ -83,6 +83,14 @@ resource "oci_core_security_list" "sec_list_01_a" {
     source   = local.anywhere
   }
   ingress_security_rules {
+    tcp_options {
+      min = 1521
+      max = 1521
+    }
+    protocol = local.tcp_protocol
+    source   = local.anywhere
+  }
+  ingress_security_rules {
     protocol = local.icmp_protocol
     source   = var.vcn_cidr_02_a
   }
@@ -127,12 +135,12 @@ resource "oci_core_drg" "drg_02_a" {
   compartment_id = var.compartment_ocid_a
 }
 
-#resource "oci_core_drg_attachment" "acceptor_drg_attachment" {
-#  provider       = oci.tenancy_a
-#  drg_id         = oci_core_drg.drg_02_a.id
-#  vcn_id         = oci_core_virtual_network.vcn_02_a.id
-#  route_table_id = oci_core_route_table.Transit_to_LPG.id
-#}
+resource "oci_core_drg_attachment" "acceptor_drg_attachment" {
+  provider       = oci.tenancy_a
+  drg_id         = oci_core_drg.drg_02_a.id
+  vcn_id         = oci_core_virtual_network.vcn_02_a.id
+  #route_table_id = oci_core_route_table.Transit_to_LPG.id
+}
 
 resource "oci_core_remote_peering_connection" "acceptor_drg" {
   provider       = oci.tenancy_a
@@ -219,6 +227,15 @@ resource "oci_core_security_list" "sec_list_02_a" {
     protocol = local.tcp_protocol
     source   = local.anywhere
   }
+  ingress_security_rules {
+    tcp_options {
+      min = 1521
+      max = 1521
+    }
+    protocol = local.tcp_protocol
+    source   = local.anywhere
+  }
+
   ingress_security_rules {
     protocol = local.icmp_protocol
     source   = var.vcn_cidr_01_a
